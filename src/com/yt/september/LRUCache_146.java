@@ -32,27 +32,26 @@ public class LRUCache_146 {
     public void put(int key, int value) {
         // 使用put方法时: 1. 判断是否本身包含key 2. 判断容量是否超限
         DLinkedNode_146 node = cache.get(key);
-        if (node != null) {
-            // 只需要将原来的节点移动到头部，并修改其值
-            moveToHead(node);
-            node.value = value;
-
-        } else {
-            // 如果没有过这个键，新建一个节点，并移除尾部的节点
-            // 然后判断容量是否超限，来决定是否先删除在插入
-            DLinkedNode_146 new_node = new DLinkedNode_146();
-            new_node.value = value;
-            if (cache.size() == this.capacity) {
-                // 将尾部移除，并返回其值，然后在头部加上新的值
-                removeTail();
-                cache.put(key, new_node);
-            } else {
-                // 直接插入
-                cache.put(key, new_node);
+        if(node == null){
+            // 如果key不存在，创建一个新的节点
+            DLinkedNode_146 newNode = new DLinkedNode_146(key, value);
+            // 添加进哈希表
+            cache.put(key, newNode);
+            // 添加到双端队列的头部
+            addToHead(newNode);
+            if(cache.size() > this.capacity) {
+                // 移除最后一个
+                DLinkedNode_146 tail = removeTail();
+                // 哈希表中对应的项也要去掉
+                cache.remove(tail.key);
             }
+        } else {
+            // 不为空，key存在，覆盖原来的值，并将其移动到头部
+            node.value = value;
+            moveToHead(node);
         }
     }
-    // 将节点移动到头部的方法
+    // 将一个新的节点移动到头部
     private void addToHead(DLinkedNode_146 node) {
         node.prev = head;
         node.next = head.next;
@@ -64,7 +63,7 @@ public class LRUCache_146 {
         node.prev.next = node.next;
         node.next.prev = node.prev;
     }
-    // 将某节点移到头部
+    // 将某个后面的节点移到头部
     private void moveToHead(DLinkedNode_146 node) {
         removeNode(node);
         addToHead(node);
