@@ -24,13 +24,33 @@ public class LRUCache_146 {
         if (node == null) {
             return -1;
         }
-        // 如果 key 存在，先通过哈希表定位，然后再移到头部
+        // 如果 key 存在，先通过哈希表定位，然后再移到头部 （表示使用过一次）
         moveToHead(node);
         return node.value;
     }
 
     public void put(int key, int value) {
+        // 使用put方法时: 1. 判断是否本身包含key 2. 判断容量是否超限
+        DLinkedNode_146 node = cache.get(key);
+        if (node != null) {
+            // 只需要将原来的节点移动到头部，并修改其值
+            moveToHead(node);
+            node.value = value;
 
+        } else {
+            // 如果没有过这个键，新建一个节点，并移除尾部的节点
+            // 然后判断容量是否超限，来决定是否先删除在插入
+            DLinkedNode_146 new_node = new DLinkedNode_146();
+            new_node.value = value;
+            if (cache.size() == this.capacity) {
+                // 将尾部移除，并返回其值，然后在头部加上新的值
+                removeTail();
+                cache.put(key, new_node);
+            } else {
+                // 直接插入
+                cache.put(key, new_node);
+            }
+        }
     }
     // 将节点移动到头部的方法
     private void addToHead(DLinkedNode_146 node) {
