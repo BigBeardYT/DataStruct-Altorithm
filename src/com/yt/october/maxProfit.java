@@ -1,6 +1,7 @@
 package com.yt.october;
 
 public class maxProfit {
+    // leetcode
     public static void main(String[] args) {
         System.out.println(maxProfit(new int[]{7, 1, 5, 3, 6, 4}));
     }
