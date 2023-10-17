@@ -7,6 +7,10 @@ public class addDigits_258 {
         System.out.println(res);
     }
     public static int addDigits(int num) {
+
+        String s = String.valueOf(num);
+//        int [] nums = s.toCharArray();
+
         int res = 0;
         do{
             res = fun(num);
