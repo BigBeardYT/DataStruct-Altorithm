@@ -1,8 +1,10 @@
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
-        String s = "abcd";
-        String p = "abc";
-        System.out.println(s.startsWith(p));
+        int num = 10;
+        System.out.println(10 / 3);
+        int res = (int) Math.ceil((double)(10 / 3));
+
+        System.out.println(Math.ceil((double)10 / 3));
     }
 }
