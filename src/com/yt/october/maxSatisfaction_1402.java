@@ -11,23 +11,17 @@ public class maxSatisfaction_1402 {
     public static int maxSatisfaction(int[] satisfaction) {
 
         Arrays.sort(satisfaction);
-
+        int res = 0;
         int n = satisfaction.length;
-        for(int i = 0, j = n-1;i < j;i++, j--) {
-            int temp = satisfaction[i];
-            satisfaction[i] = satisfaction[j];
-            satisfaction[j] = temp;
-        }
-        int [] dp = new int[n+1];
-        dp[0] = 0;
-        // dp[0] = satisfaction[0] * 1;;
+        // 枚举做菜的道数
         for(int i = 1;i <= n;i++) {
-            dp[i] = dp[i-1] + satisfaction[i-1] * i;
+            int temp = 0;
+            // 做i道菜，那么要选择最大的i道菜，也就是排序后的后i道
+            for(int j = 1;j <= i;j++) {
+                temp += (i-j+1) * satisfaction[n-j];
+            }
+            res = Math.max(temp, res);
         }
-        int maxRes = 0;
-        for(int d : dp) {
-            maxRes = Math.max(maxRes, d);
-        }
-        return maxRes;
+        return res;
     }
 }
